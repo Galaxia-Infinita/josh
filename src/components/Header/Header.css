@@ -1,0 +1,125 @@
+.vertical-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 3%;
+  height: 100vh;
+  /* CAMBIO 1: Usar RGBA del color base (#050a12) con transparencia (ej. 80%) */
+  background-color: rgba(5, 10, 18, 0.8); 
+  
+  /* CAMBIO 2: Aplicar el filtro de desenfoque (blur) */
+  backdrop-filter: blur(5px);
+  /* CAMBIO 3: Añadir prefijos para compatibilidad con navegadores */
+  -webkit-backdrop-filter: blur(5px); 
+  
+  /* CAMBIO 4 (Opcional): Borde sutil para definir el 'cristal' */
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+  /* El resto de estilos se mantiene igual: */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0;
+  color: #fff;
+  z-index: 1000;
+  box-sizing: border-box;
+  font-family: "NeueMontreal2";
+  min-height: min(700px, 100vh);
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+/* --- PARTE SUPERIOR: Íconos uno debajo del otro --- */
+.header-section.top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 0.3rem;
+}
+
+.header-section.top a {
+  background: transparent; /* sin relleno inicial */
+  color: #ffffff;
+  border: 2px solid #ffffff; /* borde blanco */
+  border-radius: 8px; /* esquinas redondeadas */
+  width: clamp(1.5rem, 1.2vw, 1.7rem);
+  height: clamp(1.5rem, 1.2vw, 1.7rem);
+  font-size: clamp(1rem, 1vw, 1.2rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.header-section.top a:hover {
+  background: #ffffff; /* se rellena al hacer hover */
+  color: #0d1b2a; /* ícono oscuro */
+  border-color: #ffffff;
+}
+
+/* --- PARTE CENTRAL: texto rotado --- */
+.header-section.middle {
+  flex: 0.2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-section.middle span {
+  transform: rotate(-90deg);
+  font-size: clamp(0.75rem, 0.8vw, 0.9rem);
+  letter-spacing: 1px;
+  color: #cbd5e1;
+  display: inline-block;
+}
+
+/* --- PARTE INFERIOR: controles rotados verticalmente --- */
+.header-section.bottom {
+  flex: 0.2;
+  transform: rotate(-90deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.header-section.bottom label {
+  color: #ffffff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.separator {
+  width: 140px;           /* longitud del separador */
+  height: 2px;           /* grosor */
+  background-color: #acaaaa; /* color gris claro */
+  margin: 20px auto;     /* centrado horizontal y margen arriba/abajo */
+  border-radius: 1px;    /* bordes suavizados */
+}
+.header-section.bottom input[type="radio"] {
+  accent-color: #3ce0c3;
+  cursor: pointer;
+}
+
+/* --- Temas globales --- */
+body[data-theme="light"] {
+  background-color: #f4f4f4;
+  color: #0d1b2a;
+}
+
+body[data-theme="dark"] {
+  background-color: #0d1b2a;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .vertical-header {
+    display: none;
+  }
+}

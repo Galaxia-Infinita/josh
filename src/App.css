@@ -1,0 +1,36 @@
+/* === Layout general para toda la app === */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: "NeueMontreal2", sans-serif;
+}
+
+/* El contenedor general de las rutas (lo que está después de los headers) */
+#root > div,
+main,
+section {
+  box-sizing: border-box;
+}
+
+/* === Espacio para el header vertical (3%) === */
+:root {
+  --vertical-header-width: 3%;
+}
+
+/* El contenido principal de las páginas (Inicio, SobreMi, etc.) */
+.main-content {
+  position: relative;
+  margin-left: var(--vertical-header-width);
+  width: calc(100% - var(--vertical-header-width));
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+/* En móviles, ocultamos el header vertical y usamos el horizontal */
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+}

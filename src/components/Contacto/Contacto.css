@@ -1,0 +1,207 @@
+.exp-mi-wrapper2 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;  
+  align-items: center;    
+  position: relative; 
+}
+
+.btn-volver4 {
+  --planet-color: rgba(255, 120, 120, 0.9);
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateX(-100%);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  background: rgba(5, 10, 18, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px 0px 0px 12px;
+  color: white;
+  padding: 16px 10px;
+  font-size: 12px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition:
+    transform 0.35s cubic-bezier(.2,.8,.2,1),
+    border-color 0.3s ease,
+    opacity 0.3s ease,
+    box-shadow 0.4s ease;
+}
+
+/* Estela */
+.btn-volver4::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--planet-color),
+    transparent
+  );
+  opacity: 0;
+  filter: blur(2px);
+  transition: opacity 0.3s ease;
+}
+
+.btn-volver4:hover {
+  opacity: 1;
+  border-color: var(--planet-color);
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--planet-color) 30%, transparent),
+    inset 0 0 12px color-mix(in srgb, var(--planet-color) 20%, transparent);
+}
+
+.btn-volver4:hover::after {
+  opacity: 1;
+}
+
+.exp-mi-frosted2 {
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+
+  background: rgba(5, 10, 18, 0.45);
+  backdrop-filter: blur(8px);
+  border-radius:0px 12px 12px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;   
+}
+
+.contacto-contenido {
+  width: 100%;   
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  text-align: center;
+  gap: 1rem;
+}
+
+
+.contacto-titulo1{
+  font-family: "NeueMontreal4", sans-serif;
+  font-size: clamp(1rem, 5vw, 11rem);
+  color: white;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Contenedor interno centrado */
+.contacto-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  max-width: 650px; /* controla ancho */
+  width: 100%;
+}
+
+/* Texto descriptivo */
+.contacto-descripcion {
+  font-family: "UrbanistLight", sans-serif;
+  font-size: clamp(1.6rem, 2vw, 2.3rem);
+  line-height: 1;
+  color: white;
+  opacity: 0.9;
+}
+
+.contacto-descripcion span {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Correo */
+.contacto-correo {
+  font-family: "NeueMontreal4", sans-serif;
+  font-size: clamp(2rem, 3vw, 3rem);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.contacto-correo {
+  transition: text-shadow 0.25s ease;
+}
+
+.contacto-correo:hover {
+  color: #3ce0c3;
+  text-shadow:
+    0 0 6px rgba(120,180,255,0.8),
+    0 0 12px rgba(120,180,255,0.4);
+}
+
+/* MEDIA QUERY CELULAR */
+@media (max-width: 768px) {
+
+  .exp-mi-wrapper2 {
+    flex-direction: column;
+    padding-top: 12px;
+  }
+
+  /* --- Botón volver --- */
+  .btn-volver4 {
+    position: static;
+    transform: none;
+    writing-mode: horizontal-tb;
+    letter-spacing: 2px;
+    font-size: 11px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    align-self: flex-start;
+  }
+
+  .btn-volver4::after,
+  .btn-volver4:hover::after {
+    display: none;
+  }
+
+  /* --- Frosted --- */
+  .exp-mi-frosted2 {
+    padding: 16px;
+    border-radius: 12px;
+    justify-content: flex-start;
+  }
+
+  /* --- Contenido --- */
+  .contacto-contenido {
+    gap: 16px;
+  }
+
+  /* --- Título --- */
+  .contacto-titulo1 {
+    font-size: clamp(32px, 10vw, 48px);
+    white-space: normal;
+  }
+
+  /* --- Info --- */
+  .contacto-info {
+    gap: 20px;
+    max-width: 100%;
+  }
+
+  .contacto-descripcion {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  /* --- Correo --- */
+  .contacto-correo {
+    font-size: 18px;
+  }
+
+  .contacto-correo:hover {
+    color: inherit;
+    text-shadow: none;
+  }
+}

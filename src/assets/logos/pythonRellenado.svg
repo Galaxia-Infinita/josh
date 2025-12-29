@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 76 76" width="35" height="35">
+  <!-- Parte superior azul -->
+  <path
+    fill="#3776AB"
+    transform="translate(-5, -4.5)"
+    d="M32 4c-8 0-14 2-14 10v6h16v4H14c-6 0-10 4-10 10v6c0 6 4 10 10 10h4v-4c0-6 4-10 10-10h14c6 0 10-4 10-10V14c0-8-6-10-14-10H32Zm-5 5a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"
+  />
+  
+  <!-- Parte inferior amarilla -->
+  <path
+    fill="#FFD43B"
+    transform="translate(3, 6)"
+    d="M32 60c8 0 14-2 14-10v-6H30v-4h20c6 0 10-4 10-10v-6c0-6-4-10-10-10h-4v4c0 6-4 10-10 10H22c-6 0-10 4-10 10v12c0 8 6 10 14 10h6Zm5-5a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z"
+  />
+</svg>
+

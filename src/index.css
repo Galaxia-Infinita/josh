@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Neue Montreal Font Family */
+@font-face {
+  font-family: 'NeueMontreal1';
+  src: url('/fonts/neuemontreal/NeueMontreal-Light.woff2') format('woff2');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NeueMontreal2';
+  src: url('/fonts/neuemontreal/NeueMontreal-Regular.woff2') format('woff2');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NeueMontreal3';
+  src: url('/fonts/neuemontreal/NeueMontreal-Medium.woff2') format('woff2');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NeueMontreal4';
+  src: url('/fonts/neuemontreal/NeueMontreal-Bold.woff2') format('woff2');
+  font-style: normal;
+}
+
+/* Urbanist Font Family */
+@font-face {
+  font-family: 'UrbanistLight';
+  src: url('/fonts/urbanist/Urbanist-Light.woff2') format('woff2');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'UrbanistRegular';
+  src: url('/fonts/urbanist/Urbanist-Regular.woff2') format('woff2');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'UrbanistMedium';
+  src: url('/fonts/urbanist/Urbanist-Medium.woff2') format('woff2');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'UrbanistBold';
+  src: url('/fonts/urbanist/Urbanist-Bold.woff2') format('woff2');
+  font-style: normal;
+}
+
+/* Base styles */
+@layer base {
+  html, body {
+    @apply h-full bg-[#050a12];
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: 'Neue Montreal', sans-serif;
+  }
+}

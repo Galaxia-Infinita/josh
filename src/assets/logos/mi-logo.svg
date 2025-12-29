@@ -1,0 +1,10 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+	<style>
+		.s0 { fill: #a7f432 } 
+		.s1 { fill: #1b63a9 } 
+		.s2 { fill: #ffffff } 
+	</style>
+	<path id="Forma 2" class="s0" d="m674.17 715.67l-232.69-430.48 386.84 1.94-95.01 173.55-32-58.18 36.85-65.92-204.58 0.96 171.61 318.02z"/>
+	<path id="Forma 1" class="s1" d="m301.29 338.99l33.93-54.3 229.78 430.48-382-0.97 93.08-177.43 30.06 61.08-35.88 66.9 208.45-0.97z"/>
+	<path id="Relleno de color sólido 1" class="s2" d="m303.75 187.31l28.5-63 366 681-30 55.5z"/>
+</svg>

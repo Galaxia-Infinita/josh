@@ -1,0 +1,302 @@
+.horizontal-scroll-container {
+  width: 100%;
+  height: 100vh;
+  color: white;
+  font-family: "NeueMontreal2", sans-serif;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left {
+  width: 33%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 80px 80px 100px 120px;
+  gap: 10px;
+  opacity: 0;   
+  transform: translateY(20px);
+  transition: all 0.3s ease-out;
+}
+
+.right {
+  width: 68%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+  gap: 30px;
+  position: relative; 
+}
+
+.contenedorR {
+  width: 98%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  justify-content: flex-start; 
+  align-items: flex-start;
+  padding: 40px;
+  gap: 30px;
+}
+
+.contenedorR::-webkit-scrollbar {
+  display: none;
+}
+
+
+/************************* PORTADA ***************************/
+/*circulo y hoyo*/
+.highlight-wrapper1 {
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 45px;
+}
+
+.hole-wrapper1 {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 35px;
+  height: 60px;
+  overflow: hidden;
+}
+
+.hole-img1 {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  width: 35px;
+  height: 6.5px;
+}
+
+.circle-img1 {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  width: 25px;
+  height: 25px;
+}
+
+/*ANIMACION*/
+.title-main {
+  font-family: "UrbanistBold", sans-serif;
+  font-size: 30px;
+}
+
+.separador{
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.subtitle-main {
+  font-family: "UrbanistLight", sans-serif;
+  font-size: 16px;
+}
+
+.underline {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.highlight {
+  background: linear-gradient(90deg, #3669ba, #0bc3dc);
+  background-repeat: no-repeat;
+  background-size: 100% 0.2em; /* grosor de la “línea” */
+  background-position: 0 100%;  /* línea al final del texto */
+  transition: background-size 0.3s ease;
+}
+
+.highlight:hover {
+  background-size: 100% 100%; /* efecto “relleno” al pasar el mouse */
+  color: white;
+}
+.item {
+  font-family: "NeueMontreal4", sans-serif;
+  font-size: clamp(80px, 8vw, 130px);
+  line-height: 0.8;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+
+  position: relative;
+  transition: transform 0.4s ease, letter-spacing 0.4s ease, color 0.3s ease;
+  transform-origin: left center;
+  color: #ffffff;
+  padding-left: 25px;
+}
+
+/* El link NO debe mover el hitbox */
+.item a {
+  opacity: 0;
+  transform: translateY(60px);
+}
+
+/* Línea decorativa */
+.item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 0%;
+  background: #42E8FF;
+  border-radius: 4px;
+  transform: translateY(-50%);
+  transition: height 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+.item:hover {
+  transform: translateX(10px) skewX(-4deg);
+  letter-spacing: 2px;
+  color: #42E8FF;
+}
+
+.item:hover::before {
+  height: 70%;
+}
+
+/* LAYOUT TECNOLOGIAS */
+.layout-tecnologias-full {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.layout-tecnologias-contenedor {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+/* RESPONSVE CELULAR */
+@media (max-width: 768px) {
+  .home-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-layout .left {
+    height: 30vh;      /* lo que pediste */
+    margin-top: auto; /* 🔥 se pega al borde inferior */
+  }
+  .container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .left {
+    width: 100%;
+    height: auto;
+    padding: 24px 24px 14px 30px;
+    justify-content:flex-start;
+    align-items:flex-start;
+  }
+
+  .right {
+    width: 100%;
+    height: auto;
+    padding: 0px;
+    align-items: stretch;
+  }
+
+  .contenedorR {
+    width: 100%;
+    height: auto;
+    padding: 16px;
+    gap: 20px;
+  }
+
+    /* --- Highlight / decorativos --- */
+  .highlight-wrapper1,
+  .hole-wrapper1 {
+    width: 21px;
+    height: 40px;
+  }
+
+  .hole-img1 {
+    width: 24px;
+    height: 5px;
+  }
+
+  .circle-img1 {
+    width: 16px;
+    height: 18px;
+    left: 3px;
+  }
+
+  /* --- Títulos --- */
+  .title-main {
+    font-size: 22px;
+  }
+
+  .subtitle-main {
+    font-size: 16px;
+  }
+
+  .underline {
+    text-underline-offset: 3px;
+  }
+
+  /* --- Items grandes (MUY IMPORTANTE) --- */
+  .item {
+    font-size: clamp(36px, 9vw, 54px);
+    line-height: 1;
+    padding-left: 16px;
+    letter-spacing: 0;
+    transform: none;
+    align-items: flex-start;
+  }
+
+  /* Desactivar hover en mobile */
+  .item:hover {
+    transform: none;
+    letter-spacing: normal;
+    color: #ffffff;
+  }
+
+  .item::before {
+    width: 4px;
+  }
+
+  .item:hover::before {
+    height: 0%;
+  }
+
+  /* El link vuelve visible sin animación */
+  .item a {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* --- Highlight hover no tiene sentido en touch --- */
+  .highlight {
+    background-size: 100% 0.15em;
+  }
+
+  .highlight:hover {
+    background-size: 100% 0.15em;
+  }
+
+  /* --- Layout full --- */
+  .layout-tecnologias-full {
+    position: absolute;
+  }
+}
