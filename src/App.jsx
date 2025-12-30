@@ -3,13 +3,12 @@ import Halo from "./assets/images/halo.png";
 import Mercurio from "./assets/images/planet1.jpg";
 import Venus from "./assets/images/planet2.jpg";
 import Tierra from "./assets/images/planet3.jpg";
-import TierraDia from "./assets/images/p3Dia.png";
+import TierraDia from "./assets/images/t4.jpg";
 import TierraNoche from "./assets/images/p3Noche.png";
-import Nube1 from "./assets/images/nubes.jfif";
-import Nube2 from "./assets/images/nubes2.jpg";
 import Aurora from "./assets/images/aurora.png";
+import Nubes from "./assets/images/nubes.png";
 import Luna from "./assets/images/moon.jpg";
-import Marte from "./assets/images/planet4.jpg";
+import Marte from "./assets/images/mars.jpg";
 import Jupiter from "./assets/images/planet5.jpg";
 import Saturno from "./assets/images/planet6.jpg";
 import SaturnoRing from "./assets/images/planet6Ring.png";
@@ -901,9 +900,8 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       texturesRef.current.tierraTexture = loader.load(Tierra);
       texturesRef.current.tierraDia = loader.load(TierraDia);
       texturesRef.current.tierraNoche = loader.load(TierraNoche);
-      texturesRef.current.n1Texture = loader.load(Nube1);
-      texturesRef.current.n2Texture = loader.load(Nube2);
       texturesRef.current.auroraTexture = loader.load(Aurora);
+      texturesRef.current.nubesTexture = loader.load(Nubes);
       texturesRef.current.lunaTexture = loader.load(Luna);
       texturesRef.current.marteTexture = loader.load(Marte);
       texturesRef.current.jupiterTexture = loader.load(Jupiter);
@@ -951,31 +949,31 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       solarGroupRef.current = solarGroup;
       scene.add(solarGroup);
   
-        // 📐 POSICIÓN RESPONSIVE
-  if (isMobile) {
-    solarGroup.position.set(0, 30, -10);
-  } else {
-    solarGroup.position.set(-45, 20, -4);
-  }
+      // 📐 POSICIÓN RESPONSIVE
+      if (isMobile) {
+        solarGroup.position.set(0, 30, -10);
+      } else {
+        solarGroup.position.set(-45, 20, -4);
+      }
 
-  // 📷 CÁMARA RESPONSIVE
-  if (isMobile) {
-    camera.position.set(0, 45, 40);
-    camera.lookAt(0, 8, -10);
-    camera.fov = 55;
-  } else {
-    camera.position.set(0, 25, 80);
-    camera.lookAt(0, 10, -4);
-    camera.fov = 45;
-  }
+      // 📷 CÁMARA RESPONSIVE
+      if (isMobile) {
+        camera.position.set(0, 45, 40);
+        camera.lookAt(0, 8, -10);
+        camera.fov = 55;
+      } else {
+        camera.position.set(0, 25, 80);
+        camera.lookAt(0, 10, -4);
+        camera.fov = 45;
+      }
   
       const renderer = new THREE.WebGLRenderer({ alpha: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
       mount.appendChild(renderer.domElement);
   
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
       defaultCameraPosRef.current = camera.position.clone();
 
@@ -1002,11 +1000,11 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       lightRef.current = light;
       defaultLightIntensityRef.current = light.intensity;
       
-light.castShadow = true;
-light.shadow.mapSize.width = 2048;
-light.shadow.mapSize.height = 2048;
-light.shadow.bias = -0.0005;
-light.shadow.radius = 6;
+      light.castShadow = true;
+      light.shadow.mapSize.width = 2048;
+      light.shadow.mapSize.height = 2048;
+      light.shadow.bias = -0.0005;
+      light.shadow.radius = 6;
 
       // -----------------------------
       // ✨ Halo del Sol (Glow) - Color Ajustado
@@ -1481,7 +1479,7 @@ light.shadow.radius = 6;
 
         wave.userData = {
           scale: 1,
-          speed: 0.02,     // 🔥 velocidad de expansión
+          speed: 0.02,
         };
 
         radioWaves.add(wave);
@@ -1509,7 +1507,7 @@ light.shadow.radius = 6;
       satellite.add(logosGroup); 
 
       // -----------------------------
-      // 🪐 Planeta 2 Venus
+      // Planeta 2 Venus
       // -----------------------------
       const orbitRadius2 = 30;
       const planet2 = new THREE.Mesh(
@@ -1546,7 +1544,7 @@ light.shadow.radius = 6;
       solarGroup.add(orbitMesh2);
   
       // -----------------------------
-      // 🪐 Planeta 3 Tierra
+      // Planeta 3 Tierra
       // -----------------------------
       const orbitRadius3 = 40.0;
       const planet3 = new THREE.Mesh(
@@ -1559,10 +1557,55 @@ light.shadow.radius = 6;
             emissiveMap: textures.tierraDia,
           })
       );
-
       planet3.castShadow = true;
       planet3.receiveShadow = true;
 
+      const cityGeometry = new THREE.SphereGeometry(3.42, 64, 64);
+      const cityLightsMaterial = new THREE.ShaderMaterial({
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        uniforms: {
+          nightMap: { value: textures.tierraNoche },
+          sunDirection: { value: new THREE.Vector3() }
+        },
+        vertexShader: `
+          varying vec3 vWorldNormal;
+          varying vec2 vUv;
+      
+          void main() {
+            vUv = uv;
+            vWorldNormal = normalize(mat3(modelMatrix) * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform sampler2D nightMap;
+          uniform vec3 sunDirection;
+      
+          varying vec3 vWorldNormal;
+          varying vec2 vUv;
+      
+          void main() {
+            // 🌞 Día / noche real
+            float NdotL = dot(normalize(vWorldNormal), normalize(sunDirection));
+            float nightFactor = smoothstep(0.0, -0.15, NdotL);
+      
+            // 🌆 Mapa de ciudades
+            float cityMask = texture2D(nightMap, vUv).r;
+      
+            // 💡 Intensidad final
+            float intensity = cityMask * nightFactor;
+      
+            vec3 cityColor = vec3(1.0, 0.75, 0.4); // dorado cálido
+      
+            gl_FragColor = vec4(cityColor * intensity, intensity);
+          }
+        `
+      });
+      const cityLights = new THREE.Mesh(cityGeometry, cityLightsMaterial);
+      planet3.add(cityLights);
+      
       // --- 🌙 Creación de la Luna ---
       const moonRadius = 0.5; 
       const moon = new THREE.Mesh(
@@ -1575,9 +1618,7 @@ light.shadow.radius = 6;
             emissiveMap: textures.lunaTexture,
           })
       );
-
       moon.castShadow = true;
-
       const moonOrbitGroup = new THREE.Group();
       const moonOrbitRadius = 5.0; 
       moon.position.x = moonOrbitRadius; 
@@ -1597,81 +1638,98 @@ light.shadow.radius = 6;
           transparent: true,
           side: THREE.DoubleSide,
       });
-  
       earthRef.current = planet3;
 
-// -----------------------------
-// 🌫️ Atmósfera terrestre
-// -----------------------------
-const atmosphereGeometry = new THREE.SphereGeometry(3.5, 32, 32);
+      // -----------------------------
+      // Atmósfera terrestre
+      // -----------------------------
+      const atmosphereGeometry = new THREE.SphereGeometry(3.5, 32, 32);
+      const atmosphereMaterial = new THREE.MeshBasicMaterial({
+        color: 0x4da6ff,
+        transparent: true,
+        opacity: 0.15,
+        side: THREE.BackSide, 
+      });
+      const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+      planet3.add(atmosphere);
 
-const atmosphereMaterial = new THREE.MeshBasicMaterial({
-  color: 0x4da6ff,
-  transparent: true,
-  opacity: 0.15,
-  side: THREE.BackSide, 
-});
+      // aurora
+      const auroraGeometry = new THREE.SphereGeometry(3.55, 64, 64);
+      const auroraMaterial = new THREE.ShaderMaterial({
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        uniforms: {
+          auroraMap: { value: textures.auroraTexture },
+          sunDirection: { value: new THREE.Vector3() }
+        },
+        vertexShader: `
+          varying vec3 vWorldNormal;
+          varying vec2 vUv;
+      
+          void main() {
+            vUv = uv;
+            vWorldNormal = normalize(mat3(modelMatrix) * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform sampler2D auroraMap;
+          uniform vec3 sunDirection;
+      
+          varying vec3 vWorldNormal;
+          varying vec2 vUv;
+      
+          void main() {
+            // 🌞 Día / noche real
+            float NdotL = dot(normalize(vWorldNormal), normalize(sunDirection));
+            float nightFactor = smoothstep(0.0, -0.25, NdotL);
+      
+            // 🧲 Latitud polar
+            float latitude = dot(normalize(vWorldNormal), vec3(0.0, 1.0, 0.0));
+            float polarBand = smoothstep(0.45, 0.7, abs(latitude));
+      
+            // 🌌 Ruido auroral
+            float noise = texture2D(auroraMap, vUv).r;
+      
+            // 🌙 Aurora solo en noche + polos
+            float auroraMask = polarBand * nightFactor * noise;
+      
+            // 🎨 Color aurora
+            vec3 auroraColor = mix(
+              vec3(0.2, 0.6, 1.0),
+              vec3(0.3, 1.0, 0.6),
+              noise
+            );
+      
+            gl_FragColor = vec4(auroraColor * auroraMask, auroraMask);
+          }
+        `
+      });
+      const aurora = new THREE.Mesh(auroraGeometry, auroraMaterial);
+      planet3.add(aurora);
+      
 
-const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-planet3.add(atmosphere);
-
-const auroraGeometry = new THREE.SphereGeometry(3.55, 64, 64);
-const auroraMaterial = new THREE.ShaderMaterial({
-  transparent: true,
-  depthWrite: false,
-  blending: THREE.AdditiveBlending,
-  uniforms: {
-    auroraMap: { value: textures.auroraTexture },
-    lightPosition: { value: new THREE.Vector3() }
-  },
-  vertexShader: `
-    varying vec3 vNormal;
-    varying vec3 vWorldPos;
-    varying vec2 vUv;
-
-    void main() {
-      vUv = uv;
-      vNormal = normalize(normalMatrix * normal);
-
-      vec4 worldPos = modelMatrix * vec4(position, 1.0);
-      vWorldPos = worldPos.xyz;
-
-      gl_Position = projectionMatrix * viewMatrix * worldPos;
-    }
-  `,
-  fragmentShader: `
-    uniform sampler2D auroraMap;
-    uniform vec3 lightPosition;
-
-    varying vec3 vNormal;
-    varying vec3 vWorldPos;
-    varying vec2 vUv;
-
-    void main() {
-      vec3 lightDir = normalize(lightPosition - vWorldPos);
-      float NdotL = dot(vNormal, lightDir);
-
-      // Aurora SOLO de noche
-      float nightFactor = smoothstep(0.0, -0.2, NdotL);
-
-      vec4 aurora = texture2D(auroraMap, vUv);
-      aurora.a *= nightFactor;
-
-      gl_FragColor = aurora;
-    }
-  `
-});
-
-
-const aurora = new THREE.Mesh(auroraGeometry, auroraMaterial);
-planet3.add(aurora);
+      // nubes
+      const cloudsGeometry = new THREE.SphereGeometry(3.45, 64, 64);
+      const cloudsMaterial = new THREE.MeshStandardMaterial({
+      map: textures.nubesTexture,
+      transparent: true,
+      opacity: 0.8,
+      depthWrite: false,
+      roughness: 1.0,
+      metalness: 0.0,
+      emissive: new THREE.Color(0x000000),
+      });
+      const clouds = new THREE.Mesh(cloudsGeometry, cloudsMaterial);
+      planet3.add(clouds);
 
       const orbitMesh3 = new THREE.Mesh(orbitLine3, orbitMat3);
       orbitMesh3.rotation.x = Math.PI / 2 + 0.5;
       solarGroup.add(orbitMesh3);
-  
+
       // -----------------------------
-      // 🪐 Planeta 4 Marte
+      // Planeta 4 Marte
       // -----------------------------
       const orbitRadius4 = 50.0;
       const planet4 = new THREE.Mesh(
@@ -1705,7 +1763,7 @@ planet3.add(aurora);
       solarGroup.add(orbitMesh4);
   
       // -----------------------------
-      // 🪐 Cinturon de asteroides
+      // Cinturon de asteroides
       // -----------------------------
       const ASTEROID_COUNT = 8000;
       const MARS_ORBIT_RADIUS = 52.0; 
@@ -1742,7 +1800,7 @@ planet3.add(aurora);
       solarGroup.add(asteroidBelt);
   
       // -----------------------------
-      // 🪐 Planeta 5 Jupiter
+      // Planeta 5 Jupiter
       // -----------------------------
       const orbitRadius5 = 65.0; 
       const planet5 = new THREE.Mesh(
@@ -1774,7 +1832,7 @@ planet3.add(aurora);
       solarGroup.add(orbitMesh5);
   
       // -----------------------------
-      // 🪐 Planeta 6 Saturno (Estructura con Grupo de Rotación)
+      // Planeta 6 Saturno (Estructura con Grupo de Rotación)
       // -----------------------------
       const orbitRadius6 = 80.0; 
       const planet6 = new THREE.Mesh(
@@ -1799,7 +1857,7 @@ planet3.add(aurora);
       solarGroup.add(orbitGroup6);
   
       // -----------------------------
-      // 📐 Línea de Órbita (sin cambios)
+      // Línea de Órbita (sin cambios)
       // -----------------------------
       const orbitLine6 = new THREE.RingGeometry(orbitRadius6, orbitRadius6 + 0.2, 64);
       const orbitMat6 = new THREE.MeshBasicMaterial({
@@ -1814,7 +1872,7 @@ planet3.add(aurora);
   
   
       // -----------------------------
-      // 🪐 Anillos de Saturno (Fijos en Inclinación)
+      // Anillos de Saturno (Fijos en Inclinación)
       // -----------------------------
       const planetRadius = 3.8; 
       const innerRing = planetRadius * 1.3;
@@ -1997,12 +2055,23 @@ planet3.add(aurora);
       kuiperBelt.rotation.x = 0.5;
       solarGroup.add(kuiperBelt);
   
-      //funcion de animacion
       function animate() {
         requestAnimationFrame(animate);
 
-        auroraMaterial.uniforms.lightPosition.value.copy(
-          lightRef.current.position
+        // movimiento sutil de nubes
+        clouds.rotation.y += 0.00015;
+
+        // aparicion de aurora en ciertas regiones
+        const sunPos = new THREE.Vector3();
+        sunRef.current.getWorldPosition(sunPos);
+        const earthPos = new THREE.Vector3();
+        planet3.getWorldPosition(earthPos);
+        const sunDir = sunPos.sub(earthPos).normalize();
+        auroraMaterial.uniforms.sunDirection.value.copy(sunDir);
+        
+        // iluminacion de puntos en planetas
+        cityLightsMaterial.uniforms.sunDirection.value.copy(
+          auroraMaterial.uniforms.sunDirection.value
         );
 
         radioWaves.children.forEach((wave, i) => {
@@ -2146,8 +2215,7 @@ planet3.add(aurora);
         }
     
         planet3.rotation.y += 0.008;
-        aurora.rotation.y += 0.0006;
-aurora.rotation.x += 0.0001;
+
         if (!freezeEarthOrbitRef.current) {
             orbitGroup3.rotation.y += 0.002;
         }
