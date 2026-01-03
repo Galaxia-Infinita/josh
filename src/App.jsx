@@ -254,6 +254,10 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     const texturesRef = useRef({});
 
     const [loaderFinished, setLoaderFinished] = useState(false);
+    const ambientAudioRef = useRef(null);
+    const zoomAudioRef = useRef(null);
+    const zoomAudioRef2 = useRef(null);
+    const [audioEnabled, setAudioEnabled] = useState(false);
 
     //constantes para congelar el movimiento al hacer zoom hacia planetas
     const freezeMercuryOrbitRef = useRef(false);
@@ -262,7 +266,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     const freezeMarsOrbitRef = useRef(false);
     const activeSectionRef = useRef(null);
     // ----------------------------------------------------
-    // ⭐ Función: Agregar la Franja Galáctica (Corregida Sin Rotación Diagonal)
+    // Función: Agregar la Franja Galáctica (Corregida Sin Rotación Diagonal)
     // ----------------------------------------------------
       const addMilkyWayFranja = (scene, texture) => {
         const width = 200; 
@@ -291,7 +295,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     };
   
     // ----------------------------------------------------
-    // ⭐ Función: Agregar la Estela de Resplandor (Halo)
+    // Función: Agregar la Estela de Resplandor (Halo)
     // ----------------------------------------------------
     const addGlowHalo = (scene, glowTexture) => {
       const width = 250;
@@ -319,7 +323,55 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       scene.add(glowPlane);
       return glowPlane;
     };
-
+    
+    // ----------------------------------------------------
+    // helper reutilizable para controlar el sonido de viaje
+    // ----------------------------------------------------
+    function playZoomSound(offset = 1) {
+      const audio = zoomAudioRef.current;
+      if (!audio) return;
+    
+      // ⏩ empezar desde el offset (segundos)
+      audio.currentTime = offset;
+      audio.volume = 0.4;
+      audio.play().catch(() => {});
+    
+      // fade-out automático
+      setTimeout(() => {
+        const fade = setInterval(() => {
+          if (audio.volume > 0.03) {
+            audio.volume -= 0.03;
+          } else {
+            audio.pause();
+            audio.volume = 0.4; // reset
+            clearInterval(fade);
+          }
+        }, 50);
+      }, 1800);
+    }
+    function playZoomSound2(offset = 1) {
+      const audio = zoomAudioRef2.current;
+      if (!audio) return;
+    
+      // ⏩ empezar desde el offset (segundos)
+      audio.currentTime = offset;
+      audio.volume = 0.4;
+      audio.play().catch(() => {});
+    
+      // fade-out automático
+      setTimeout(() => {
+        const fade = setInterval(() => {
+          if (audio.volume > 0.03) {
+            audio.volume -= 0.03;
+          } else {
+            audio.pause();
+            audio.volume = 0.4; // reset
+            clearInterval(fade);
+          }
+        }, 50);
+      }, 1800);
+    }
+    
     function SceneController({ sceneReady }) {
       const location = useLocation();
     
@@ -386,9 +438,13 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     }
 
     function zoomToMercury() {
+      /* SONIDO DE VIAJE ESPACIAL*/
+      playZoomSound2(0.5); // empieza desde 0.5s
+
       isZoomingRef.current = true;
       freezeMercuryOrbitRef.current = true;
-    
+      /**/
+
       followVenusRef.current = false;
       followEarthRef.current = false;
       followMarsRef.current = false;
@@ -454,6 +510,10 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     }
      
     function zoomToVenus() {
+      /* SONIDO DE VIAJE ESPACIAL*/
+      playZoomSound2(0.5); // empieza desde 0.5s
+      /**/
+
       isZoomingRef.current = true;
       freezeVenusOrbitRef.current = true;
     
@@ -461,6 +521,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       followMercuryRef.current = false;
       followEarthRef.current = false;
       followMarsRef.current = false;
+      followSatelliteRef.current = false;
     
       const camera = cameraRef.current;
       const venus = venusRef.current;
@@ -526,6 +587,10 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     } 
     
     function zoomToEarth() {
+      /* SONIDO DE VIAJE ESPACIAL*/
+      playZoomSound2(0.5); // empieza desde 0.5s
+      /**/
+
       isZoomingRef.current = true;
       freezeEarthOrbitRef.current = true;
     
@@ -534,6 +599,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       followVenusRef.current = false;
       followMarsRef.current = false;
       followEarthRef.current = false;
+      followSatelliteRef.current = false;
     
       const camera = cameraRef.current;
       const earth = earthRef.current;
@@ -598,6 +664,10 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     }
       
     function zoomToMars() {
+      /* SONIDO DE VIAJE ESPACIAL*/
+      playZoomSound2(0.5); // empieza desde 0.5s
+      /**/
+
       isZoomingRef.current = true;
       freezeMarsOrbitRef.current = true;
     
@@ -606,6 +676,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       followVenusRef.current = false;
       followEarthRef.current = false;
       followMarsRef.current = false;
+      followSatelliteRef.current = false;
     
       const camera = cameraRef.current;
       const mars = marsRef.current;
@@ -670,6 +741,10 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     }
       
     function zoomToSatellite() {
+      /* SONIDO DE VIAJE ESPACIAL*/
+      playZoomSound2(0.5); // empieza desde 0.5s
+      /**/
+
       isZoomingRef.current = true;
       freezeSatelliteOrbitRef.current = true;
     
@@ -746,9 +821,12 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     
       animateZoom();
     }
-    
 
     function resetZoom() {
+      /* SONIDO DE VIAJE ESPACIAL*/
+      playZoomSound(0.5); // empieza desde 0.5s
+      /**/
+
       isZoomingRef.current = true;
       followMercuryRef.current = false;
       followVenusRef.current = false;
@@ -855,6 +933,48 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       planet.position.x = Math.cos(angleRad) * radius;
       planet.position.z = Math.sin(angleRad) * radius;
     }
+
+    useEffect(() => {
+      // Ambiente (header lo controla)
+      ambientAudioRef.current = new Audio(
+        `${import.meta.env.BASE_URL}audio/musicAmbient.mp3`
+      );
+      ambientAudioRef.current.loop = true;
+      ambientAudioRef.current.volume = 0.18;
+      ambientAudioRef.current.playbackRate = 0.9; 
+    
+      //Viaje (solo zoom)
+      zoomAudioRef.current = new Audio(
+        `${import.meta.env.BASE_URL}audio/viaje.mp3`
+      );
+      zoomAudioRef.current.loop = false;
+      zoomAudioRef.current.volume = 0.4;
+
+      //Viaje2 (solo zoom)
+      zoomAudioRef2.current = new Audio(
+        `${import.meta.env.BASE_URL}audio/viaje2.mp3`
+      );
+      zoomAudioRef2.current.loop = false;
+      zoomAudioRef2.current.volume = 0.4;
+      
+    }, []);
+
+    /* CONTROL DE AUDIO */
+    const toggleAudio = () => {
+      const audio = ambientAudioRef.current;
+      if (!audio) return;
+    
+      if (audioEnabled) {
+        audio.pause();
+        audio.currentTime = 0; // ⬅ reinicia al apagar
+        setAudioEnabled(false);
+      } else {
+        audio.currentTime = 0; // ⬅ asegura que siempre empieza desde el inicio
+        audio.play().then(() => {
+          setAudioEnabled(true);
+        });
+      }
+    };
 
     useEffect(() => {
       const startTime = performance.now();
@@ -2607,14 +2727,14 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     
         {/* Ya no hay Router aquí */}
         <SceneController sceneReady={sceneReady} />
-        <Header />
+        <Header audioEnabled={audioEnabled} onToggleAudio={toggleAudio}/>
         <HeaderHorizontal />
     
         <main className="main-content">
           {sceneReady && (
             <Routes>
               {/* LAYOUT PRINCIPAL */}
-              <Route path="/" element={<LayoutInicio />}>
+              <Route path="/" element={<LayoutInicio audioEnabled={audioEnabled} onToggleAudio={toggleAudio}/>}>
                 <Route index element={<Inicio loaderFinished={loaderFinished} />} />
                 <Route path="sobre-mi" element={<SobreMi isReady={uiReady} />} />
                 <Route path="experiencia" element={<Experiencia isReady={uiReady} />} />

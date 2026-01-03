@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react"; 
+import { useEffect, useRef, useState } from "react"; 
 import { useLocation, Link } from "react-router-dom";
+import { Linkedin, Instagram, Github, Volume2, VolumeX, Info } from "lucide-react";
 import { Outlet } from "react-router-dom";
 import "./Inicio.css";
 import { animacionInicio } from "../Animaciones/AnimInicio";
@@ -7,7 +8,7 @@ import Circle from "../../assets/logos/circulo.svg";
 import Hole from "../../assets/logos/hoyo.svg";
 import gsap from "gsap";
 
-export default function LayoutInicio() {
+export default function LayoutInicio({ audioEnabled, onToggleAudio }) {
   const circulo = useRef(null);
   const hoyo = useRef(null);
   const containerRef = useRef(null);
@@ -92,6 +93,37 @@ export default function LayoutInicio() {
             <Outlet />
           </div>
         </div>
+{isMobile && (
+  <div className="floating-buttons-vertical-custom">
+    {/* Botón de créditos arriba */}
+    <div className="floating-btn-wrapper">
+      <button
+        className="floating-btn"
+        aria-label="Credits"
+        title={`Flashlight - Evolving Ambient Track (Loopable) 
+by kjartan_abel 
+-- https://freesound.org/s/610747/ 
+-- License: Attribution 4.0`}
+      >
+        <Info size={20} />
+      </button>
+    </div>
+
+    {/* Botón de audio debajo */}
+    <div className="floating-btn-wrapper">
+      <button
+        className={`floating-btn ${audioEnabled ? "active" : ""}`}
+        onClick={onToggleAudio}
+        aria-label="Audio"
+      >
+        {audioEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
+      </button>
+    </div>
+  </div>
+)}
+
+
+
       </div>
     </div>
   );

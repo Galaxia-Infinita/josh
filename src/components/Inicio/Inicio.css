@@ -170,6 +170,85 @@
   height: 70%;
 }
 
+/*BOTONES DE AUDIO Y CREDITOS*/
+.floating-buttons-vertical-custom {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.floating-btn-wrapper {
+  position: relative;
+}
+
+.floating-btn-wrapper button[title]::before {
+  content: attr(title);
+  position: absolute;
+  right: 110%; 
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.floating-btn-wrapper button[title]:hover::before {
+  opacity: 1;
+}
+
+.floating-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px; 
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  opacity: 0.85;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.floating-btn:hover {
+  background: #ffffff;
+  color: #0d1b2a;
+  border-color: #ffffff;
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.6),
+    0 0 22px rgba(120, 180, 255, 0.4);
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+.floating-btn:active {
+  transform: scale(0.92);
+}
+
+.floating-btn.active {
+  background: #ffffff;
+  color: #0d1b2a;
+  box-shadow:
+    0 0 12px rgba(255,255,255,0.6),
+    inset 0 0 4px rgba(0,0,0,0.2);
+}
+
 /* LAYOUT TECNOLOGIAS */
 .layout-tecnologias-full {
   width: 100%;
@@ -199,7 +278,6 @@
   .container {
     flex-direction: column;
     height: auto;
-    min-height: 100vh;
   }
 
   .left {
