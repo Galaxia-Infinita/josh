@@ -16,6 +16,8 @@ export default function LayoutInicio({ audioEnabled, onToggleAudio }) {
   const location = useLocation();
   const isHome = location.pathname === "/" || location.pathname === "";
   const isMobile = window.innerWidth <= 768;
+
+  const [showCredits, setShowCredits] = useState(false);
   
   useEffect(() => {
     function hide() {
@@ -93,37 +95,43 @@ export default function LayoutInicio({ audioEnabled, onToggleAudio }) {
             <Outlet />
           </div>
         </div>
-{isMobile && (
-  <div className="floating-buttons-vertical-custom">
-    {/* Botón de créditos arriba */}
-    <div className="floating-btn-wrapper">
-      <button
-        className="floating-btn"
-        aria-label="Credits"
-        title={`Flashlight - Evolving Ambient Track (Loopable) 
-by kjartan_abel 
--- https://freesound.org/s/610747/ 
--- License: Attribution 4.0`}
-      >
-        <Info size={20} />
-      </button>
-    </div>
+        {isMobile && ( 
+          <div className="floating-buttons-vertical-custom">
+            {/* Botón de créditos */}
+            <div className="floating-btn-wrapper">
+              <button
+                className={`floating-btn ${showCredits ? "active" : ""}`}
+                onClick={() => setShowCredits(!showCredits)}
+                aria-label="Credits"
+              >
+                <Info size={20} />
+              </button>
 
-    {/* Botón de audio debajo */}
-    <div className="floating-btn-wrapper">
-      <button
-        className={`floating-btn ${audioEnabled ? "active" : ""}`}
-        onClick={onToggleAudio}
-        aria-label="Audio"
-      >
-        {audioEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
-      </button>
-    </div>
-  </div>
-)}
+              {/* Tooltip tipo cuadro al hacer click */}
+              {showCredits && (
+                <div className="credits-tooltip">
+                  <p>
+                    Flashlight - Evolving Ambient Track (Loopable) <br />
+                    by kjartan_abel <br />
+                    -- https://freesound.org/s/610747/ <br />
+                    -- License: Attribution 4.0
+                  </p>
+                </div>
+              )}
+            </div>
 
-
-
+            {/* Botón de audio */}
+            <div className="floating-btn-wrapper">
+              <button
+                className={`floating-btn ${audioEnabled ? "active" : ""}`}
+                onClick={onToggleAudio}
+                aria-label="Audio"
+              >
+                {audioEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

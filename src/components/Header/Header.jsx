@@ -55,13 +55,13 @@ const Header = ({ audioEnabled, onToggleAudio }) => {
             {audioEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}
           </button>
           <button
-  className="header-control-btn"
-  aria-label="Credits"
-  title={`Flashlight - Evolving Ambient Track (Loopable) by kjartan_abel 
--- https://freesound.org/s/610747/ -- License: Attribution 4.0`}
->
-  <Info size={15} />
-</button>
+            className="header-control-btn"
+            aria-label="Credits"
+            title={`Flashlight - Evolving Ambient Track (Loopable) by kjartan_abel 
+          -- https://freesound.org/s/610747/ -- License: Attribution 4.0`}
+          >
+            <Info size={15} />
+          </button>
         </div>
       </header>
     </>
