@@ -115,12 +115,12 @@
   color: #e1e1e1;
 }
 
-.crea-tab:hover {
-  background: rgba(255, 255, 255, 0.15);
+.crea-tab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .crea-tab.active {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgb(0, 107, 195);
   font-weight: bold;
   color: #fff;
 }
@@ -253,7 +253,6 @@
   gap: 40px;
   align-items: center;
   justify-content: center;
-  /*padding-bottom: 50px;*/
 }
 
 .apps-wrapper2 {
@@ -326,6 +325,36 @@
 .crea-web-card video {
   background: #000;
 }
+
+/* DISEÑO */
+.crea-diseno-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.crea-diseno-title {
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: white;
+  opacity: 0.9;
+}
+
+.crea-diseno-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.crea-diseno-img {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+
 
 /* MEDIA QUERY CELULAR */
 @media (max-width: 768px) {
@@ -436,44 +465,58 @@
       max-height: 65vh;
     }
   
-    /* --- Apps layout --- */
-    .apps-wrapper,
-    .apps-wrapper2 {
-      flex-direction: column;
-      gap: 20px;
-    }
+      .apps-wrapper {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .apps-phone-img {
+    width: 180px;
+    border-radius: 16px;
+  }
+
+  .apps-right {
+    max-width: 100%;
+    gap: 18px;
+  }
+
+  .apps-description {
+    padding: 14px;
+  }
+
+  .apps-title {
+    font-size: 16px;
+  }
+
+  .apps-text {
+    font-size: 13px;
+  }
+
+  .apps-screenshots {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .apps-shot {
+    width: 80px;
+  }
+
+  .crea-tab.active {
+    background: rgb(0, 115, 255);
+    border-color: rgba(120, 180, 255, 0.55);
+    box-shadow:
+      inset 0 0 12px rgba(120, 180, 255, 0.35),
+      0 0 12px rgba(120, 180, 255, 0.35);
+  }
   
-    .apps-phone-img {
-      width: 180px;
-      border-radius: 16px;
-    }
-  
-    .apps-right {
-      max-width: 100%;
-      gap: 18px;
-    }
-  
-    .apps-description {
-      padding: 14px;
-    }
-  
-    .apps-title {
-      font-size: 16px;
-    }
-  
-    .apps-text {
-      font-size: 13px;
-    }
-  
-    .apps-screenshots {
-      justify-content: center;
-      gap: 16px;
-    }
-  
-    .apps-shot {
-      width: 80px;
-    }
-  
+  .crea-diseno-row {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
     /* --- Videos --- */
     .crea-web-video {
       border-radius: 12px;
