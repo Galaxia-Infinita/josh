@@ -271,10 +271,6 @@
     flex-direction: column;
   }
 
-  .home-layout .left {
-    height: 30vh;      /* lo que pediste */
-    margin-top: auto; /* 🔥 se pega al borde inferior */
-  }
   .container {
     flex-direction: column;
     height: auto;
