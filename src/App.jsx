@@ -24,7 +24,7 @@ import HaloFranja from "./assets/images/haloFranja.png";
 import Space from "./assets/images/space.webp";
 
 import { BrowserRouter as Router, Routes, Route,useLocation } from "react-router-dom";
-import * as THREE from "three"; // Necesario para THREE.LoadingManager
+import * as THREE from "three";
 import Header from "./components/Header/Header";
 import HeaderHorizontal from "./components/Header/Horizontal-header";
 import Inicio from "./components/Inicio/Inicio";
@@ -42,7 +42,7 @@ import LayoutInicio from "./components/Inicio/LayoutInicio";
 import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
 
   // ----------------------------------------------------
-  // ⭐ FUNCIÓN: Estrellas muestreadas por la Franja (Alternando Texturas)
+  // FUNCIÓN: Estrellas muestreadas por la Franja (Alternando Texturas)
   // ----------------------------------------------------
   const addFranjaStars = async (count, franjaPlane, group, destelloTexture, estrella2Texture, franjaTextureURL) => {
 
@@ -166,7 +166,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
   };
 
   // ===============================================
-  // ☄️ CÓDIGO DE LA ÓRBITA DEL COMETA (DEFINICIÓN)
+  // CÓDIGO DE LA ÓRBITA DEL COMETA (DEFINICIÓN)
   // ===============================================
   const perihelionDistance = 20;
   const rotationAngle = -0.5;
@@ -183,7 +183,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
   };
 
   // -----------------------------
-  // ✨ Fondo estrellas
+  // Fondo estrellas
   // -----------------------------
   const addStars = (count, range, group, texture) => {
       const starGeometry = new THREE.BufferGeometry();
@@ -438,13 +438,12 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     }
 
     function zoomToMercury() {
-      /* SONIDO DE VIAJE ESPACIAL*/
-      playZoomSound2(0.5); // empieza desde 0.5s
-
+      /* SONIDO DE VIAJE ESPACIAL */
+      playZoomSound2(0.5);
+    
       isZoomingRef.current = true;
       freezeMercuryOrbitRef.current = true;
-      /**/
-
+    
       followVenusRef.current = false;
       followEarthRef.current = false;
       followMarsRef.current = false;
@@ -458,15 +457,34 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     
       if (!camera || !mercury || !sun || !halo || !light) return;
     
-      const isMobile = window.innerWidth <= 768; // ✅ Detectar móvil
+      const width = window.innerWidth;
+      const isMobile = width <= 768;
+      const isTablet = width > 768 && width <= 1279;
     
       let progress = 0;
     
-      // 🎥 OFFSETS SEGÚN DISPOSITIVO
-      const CAM_OFFSET  = isMobile ? new THREE.Vector3(0, 0, 4) : new THREE.Vector3(3, 2, 7);
-      const LOOK_OFFSET = isMobile ? new THREE.Vector3(0, -1.2, 0) : new THREE.Vector3(3.5, -1.5, 0);
+      // 🎥 OFFSETS POR DISPOSITIVO
+      let CAM_OFFSET;
+      let LOOK_OFFSET;
+    
+      if (isMobile) {
+        // 📱 MOBILE
+        CAM_OFFSET  = new THREE.Vector3(0, 0, 4);
+        LOOK_OFFSET = new THREE.Vector3(0, -1.2, 0);
+    
+      } else if (isTablet) {
+        // 📱➡️💻 TABLET (más aire que mobile, menos agresivo que desktop)
+        CAM_OFFSET  = new THREE.Vector3(0, 1.2, 2.8);
+        LOOK_OFFSET = new THREE.Vector3(0, -1.3, 0);
+    
+      } else {
+        // 🖥 DESKTOP
+        CAM_OFFSET  = new THREE.Vector3(3, 2, 7);
+        LOOK_OFFSET = new THREE.Vector3(3.5, -1.5, 0);
+      }
     
       const startPos = camera.position.clone();
+    
       const mercuryPos = new THREE.Vector3();
       mercury.getWorldPosition(mercuryPos);
     
@@ -477,7 +495,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       const startHaloScale = halo.scale.clone();
       const startLightIntensity = light.intensity;
     
-      // 🌑 valores finales (sol reducido)
+      // 🌑 valores finales
       const endSunScale  = new THREE.Vector3(0.15, 0.15, 0.15);
       const endHaloScale = new THREE.Vector3(6, 6, 1);
       const endLightIntensity = startLightIntensity * 0.2;
@@ -486,13 +504,16 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
         progress = Math.min(1, progress + 0.02);
     
         camera.position.lerpVectors(startPos, finalPos, progress);
+    
         const customLookAt = mercuryPos.clone().add(LOOK_OFFSET);
         camera.lookAt(customLookAt);
     
         sun.scale.lerpVectors(startSunScale, endSunScale, progress);
         halo.scale.lerpVectors(startHaloScale, endHaloScale, progress);
     
-        light.intensity = startLightIntensity + (endLightIntensity - startLightIntensity) * progress;
+        light.intensity =
+          startLightIntensity +
+          (endLightIntensity - startLightIntensity) * progress;
     
         if (progress < 1) {
           requestAnimationFrame(animateZoom);
@@ -508,12 +529,11 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     
       animateZoom();
     }
-     
+    
     function zoomToVenus() {
-      /* SONIDO DE VIAJE ESPACIAL*/
+      /* SONIDO DE VIAJE ESPACIAL */
       playZoomSound2(0.5); // empieza desde 0.5s
-      /**/
-
+    
       isZoomingRef.current = true;
       freezeVenusOrbitRef.current = true;
     
@@ -531,13 +551,32 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     
       if (!camera || !venus || !sun || !halo || !light) return;
     
-      const isMobile = window.innerWidth <= 768;
+      // detectar dispositivo
+      const width = window.innerWidth;
+      const isMobile = width <= 768;
+      const isTablet = width > 768 && width <= 1279;
     
       let progress = 0;
     
-      // 🎥 OFFSETS RESPONSIVE
-      const CAM_OFFSET = isMobile ? new THREE.Vector3(0, 0, 8) : new THREE.Vector3(15, 5, 15);  
-      const LOOK_OFFSET = isMobile ? new THREE.Vector3(0, -2, 0) : new THREE.Vector3(10, -2, 0);
+      // OFFSETS POR DISPOSITIVO
+      let CAM_OFFSET;
+      let LOOK_OFFSET;
+    
+      if (isMobile) {
+        // MOBILE
+        CAM_OFFSET  = new THREE.Vector3(0, 0, 8);
+        LOOK_OFFSET = new THREE.Vector3(0, -2, 0);
+    
+      } else if (isTablet) {
+        // TABLET
+        CAM_OFFSET  = new THREE.Vector3(0, 4, 8);
+        LOOK_OFFSET = new THREE.Vector3(0, -4, 0);
+    
+      } else {
+        // DESKTOP
+        CAM_OFFSET  = new THREE.Vector3(15, 5, 15);
+        LOOK_OFFSET = new THREE.Vector3(10, -2, 0);
+      }
     
       const startPos = camera.position.clone();
     
@@ -584,17 +623,17 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       }
     
       animateZoom();
-    } 
+    }
     
     function zoomToEarth() {
-      /* SONIDO DE VIAJE ESPACIAL*/
+      /* SONIDO DE VIAJE ESPACIAL */
       playZoomSound2(0.5); // empieza desde 0.5s
       /**/
-
+    
       isZoomingRef.current = true;
       freezeEarthOrbitRef.current = true;
     
-      // apaga otros follows
+      // apagar otros follows
       followMercuryRef.current = false;
       followVenusRef.current = false;
       followMarsRef.current = false;
@@ -609,12 +648,32 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     
       if (!camera || !earth || !sun || !halo || !light) return;
     
-      const isMobile = window.innerWidth <= 768;
+      // detectar dispositivo
+      const width = window.innerWidth;
+      const isMobile = width <= 768;
+      const isTablet = width > 768 && width <= 1279;
+    
       let progress = 0;
     
-      // 🎥 OFFSETS RESPONSIVE
-      const CAM_OFFSET = isMobile ? new THREE.Vector3(0, 0, 10) : new THREE.Vector3(18, 6, 15);
-      const LOOK_OFFSET = isMobile ? new THREE.Vector3(0, -3, 0) : new THREE.Vector3(12, -2, 0);
+      // OFFSETS POR DISPOSITIVO
+      let CAM_OFFSET;
+      let LOOK_OFFSET;
+    
+      if (isMobile) {
+        // 📱 MOBILE
+        CAM_OFFSET  = new THREE.Vector3(0, 0, 10);
+        LOOK_OFFSET = new THREE.Vector3(0, -3, 0);
+    
+      } else if (isTablet) {
+        // TABLET
+        CAM_OFFSET  = new THREE.Vector3(0, 4, 8);
+        LOOK_OFFSET = new THREE.Vector3(0, -4, 0);
+    
+      } else {
+        // DESKTOP
+        CAM_OFFSET  = new THREE.Vector3(18, 6, 15);
+        LOOK_OFFSET = new THREE.Vector3(12, -2, 0);
+      }
     
       const startPos = camera.position.clone();
     
@@ -662,16 +721,16 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     
       animateZoom();
     }
-      
+  
     function zoomToMars() {
-      /* SONIDO DE VIAJE ESPACIAL*/
+      /* SONIDO DE VIAJE ESPACIAL */
       playZoomSound2(0.5); // empieza desde 0.5s
       /**/
-
+    
       isZoomingRef.current = true;
       freezeMarsOrbitRef.current = true;
     
-      // apaga otros follows
+      // apagar otros follows
       followMercuryRef.current = false;
       followVenusRef.current = false;
       followEarthRef.current = false;
@@ -686,12 +745,32 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     
       if (!camera || !mars || !sun || !halo || !light) return;
     
-      const isMobile = window.innerWidth <= 768;
+      // detectar dispositivo
+      const width = window.innerWidth;
+      const isMobile = width <= 768;
+      const isTablet = width > 768 && width <= 1279;
+    
       let progress = 0;
     
-      // 🎥 OFFSETS RESPONSIVE
-      const CAM_OFFSET = isMobile ? new THREE.Vector3(0, 0, 12) : new THREE.Vector3(18, 6, 15);
-      const LOOK_OFFSET = isMobile ? new THREE.Vector3(0, -3, 0) : new THREE.Vector3(12, -2, 0);
+      // OFFSETS POR DISPOSITIVO
+      let CAM_OFFSET;
+      let LOOK_OFFSET;
+    
+      if (isMobile) {
+        // MOBILE
+        CAM_OFFSET  = new THREE.Vector3(0, 0, 12);
+        LOOK_OFFSET = new THREE.Vector3(0, -3, 0);
+    
+      } else if (isTablet) {
+        // TABLET
+        CAM_OFFSET  = new THREE.Vector3(0, 4, 8);
+        LOOK_OFFSET = new THREE.Vector3(0, -4, 0);
+    
+      } else {
+        // DESKTOP
+        CAM_OFFSET  = new THREE.Vector3(18, 6, 15);
+        LOOK_OFFSET = new THREE.Vector3(12, -2, 0);
+      }
     
       const startPos = camera.position.clone();
     
@@ -700,12 +779,12 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     
       const finalPos = marsPos.clone().add(CAM_OFFSET);
     
-      // 🌞 valores iniciales
+      // valores iniciales
       const startSunScale = sun.scale.clone();
       const startHaloScale = halo.scale.clone();
       const startLightIntensity = light.intensity;
     
-      // 🌑 valores finales
+      // valores finales
       const endSunScale  = new THREE.Vector3(0.15, 0.15, 0.15);
       const endHaloScale = new THREE.Vector3(6, 6, 1);
       const endLightIntensity = startLightIntensity * 0.2;
@@ -739,86 +818,99 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     
       animateZoom();
     }
-      
+     
     function zoomToSatellite() {
-      /* SONIDO DE VIAJE ESPACIAL*/
-      playZoomSound2(0.5); // empieza desde 0.5s
-      /**/
+      /* SONIDO DE VIAJE ESPACIAL */
+      playZoomSound2(0.5);
 
       isZoomingRef.current = true;
       freezeSatelliteOrbitRef.current = true;
-    
+
       // apaga otros follows
       followMercuryRef.current = false;
       followVenusRef.current = false;
       followEarthRef.current = false;
       followMarsRef.current = false;
       followSatelliteRef.current = false;
-    
+
       const camera = cameraRef.current;
       const satellite = satelliteRef.current;
       const sun = sunRef.current;
       const halo = haloRef.current;
       const light = lightRef.current;
-    
+
       if (!camera || !satellite || !sun || !halo || !light) return;
-    
-      const isMobile = window.innerWidth <= 768;
+
+      const width = window.innerWidth;
+      const isMobile = width <= 768;
+      const isTablet = width > 768 && width <= 1279;
+
       let progress = 0;
-    
-      // 🎥 OFFSETS RESPONSIVE
-      const CAM_OFFSET = isMobile
-        ? new THREE.Vector3(0, 1.5, 6)   // 📱 móvil
-        : new THREE.Vector3(0, 1.2, 5);  // 🖥️ desktop
-    
-      const LOOK_OFFSET = isMobile
-        ? new THREE.Vector3(0, -1.5, 0)  // 📱 mirar más abajo
-        : new THREE.Vector3(0, 0, 0);    // 🖥️ centro exacto
-    
+
+      // 🎥 OFFSETS POR DISPOSITIVO
+      let CAM_OFFSET;
+      let LOOK_OFFSET;
+
+      if (isMobile) {
+        // 📱 MOBILE
+        CAM_OFFSET  = new THREE.Vector3(0, 1.5, 6);
+        LOOK_OFFSET = new THREE.Vector3(0, -1.5, 0);
+
+      } else if (isTablet) {
+        // 📱➡️💻 TABLET (más aire, menos agresivo)
+        CAM_OFFSET  = new THREE.Vector3(0, 1.8, 6);
+        LOOK_OFFSET = new THREE.Vector3(0, -1.8, 0);
+
+      } else {
+        // 🖥 DESKTOP
+        CAM_OFFSET  = new THREE.Vector3(0, 1.2, 5);
+        LOOK_OFFSET = new THREE.Vector3(0, 0, 0);
+      }
+
       const startPos = camera.position.clone();
-    
+
       const satellitePos = new THREE.Vector3();
       satellite.getWorldPosition(satellitePos);
-    
+
       const finalPos = satellitePos.clone().add(CAM_OFFSET);
-    
+
       // 🌞 valores iniciales
       const startSunScale = sun.scale.clone();
       const startHaloScale = halo.scale.clone();
       const startLightIntensity = light.intensity;
-    
+
       // 🌑 valores finales
       const endSunScale  = new THREE.Vector3(0.1, 0.1, 0.1);
       const endHaloScale = new THREE.Vector3(4, 4, 1);
       const endLightIntensity = startLightIntensity * 0.15;
-    
+
       function animateZoom() {
         progress = Math.min(1, progress + 0.02);
-    
+
         camera.position.lerpVectors(startPos, finalPos, progress);
-    
+
         const customLookAt = satellitePos.clone().add(LOOK_OFFSET);
         camera.lookAt(customLookAt);
-    
+
         sun.scale.lerpVectors(startSunScale, endSunScale, progress);
         halo.scale.lerpVectors(startHaloScale, endHaloScale, progress);
-    
+
         light.intensity =
           startLightIntensity +
           (endLightIntensity - startLightIntensity) * progress;
-    
+
         if (progress < 1) {
           requestAnimationFrame(animateZoom);
         } else {
           freezeSatelliteOrbitRef.current = false;
           followSatelliteRef.current = true;
           isZoomingRef.current = false;
-    
+
           window.dispatchEvent(new Event("contenedor-show"));
           setUiReady(true);
         }
       }
-    
+
       animateZoom();
     }
 
@@ -1047,8 +1139,12 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
     useEffect(() => {
       if (!texturesLoaded) return;
 
-      const isMobile = window.innerWidth <= 768;
+      const width = window.innerWidth;
 
+      const isMobile = width <= 768;
+      const isTablet = width > 768 && width < 1280;
+      const isDesktop = width >= 1280;
+      
       const textures = texturesRef.current;
       const mount = mountRef.current;
       const scene = new THREE.Scene();
@@ -1063,28 +1159,33 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       cameraRef.current = camera;
 
       // ------------------------------------------
-      // 🧩 NUEVO: Grupo raíz para mover todo
+      // NUEVO: Grupo raíz para mover todo
       // ------------------------------------------
       const solarGroup = new THREE.Group();
       solarGroupRef.current = solarGroup;
       scene.add(solarGroup);
   
-      // 📐 POSICIÓN RESPONSIVE
+      // POSICIÓN RESPONSIVE
       if (isMobile) {
         solarGroup.position.set(0, 30, -10);
+      } else if (isTablet) {
+        solarGroup.position.set(0, 30, -8);
       } else {
         solarGroup.position.set(-45, 20, -4);
       }
 
-      // 📷 CÁMARA RESPONSIVE
+      // CÁMARA RESPONSIVE
       if (isMobile) {
         camera.position.set(0, 45, 40);
         camera.lookAt(0, 8, -10);
         camera.fov = 55;
+      } else if (isTablet) {
+        camera.position.set(0, 32, 30);
+        camera.lookAt(0, 9, -7);
+        camera.fov = 50;
       } else {
         camera.position.set(0, 25, 80);
         camera.lookAt(0, 10, -4);
-        camera.fov = 45;
       }
   
       const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -1098,7 +1199,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       defaultCameraPosRef.current = camera.position.clone();
 
       // -----------------------------
-      // 🌞 Sol (ACTUALIZADO: Naranja Brillante y Consistente)
+      // Sol (ACTUALIZADO: Naranja Brillante y Consistente)
       // -----------------------------
       const sun = new THREE.Mesh(
           new THREE.SphereGeometry(14, 32, 32),
@@ -1127,7 +1228,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       light.shadow.radius = 6;
 
       // -----------------------------
-      // ✨ Halo del Sol (Glow) - Color Ajustado
+      // Halo del Sol (Glow) - Color Ajustado
       // -----------------------------
   
       const haloMaterial = new THREE.SpriteMaterial({ 
@@ -1146,7 +1247,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       haloRef.current = halo;
       defaultHaloScaleRef.current = halo.scale.clone();
 
-      // ➡️ LLAMADA: Creación de instancias (Efecto Secundario)
+      // LLAMADA: Creación de instancias (Efecto Secundario)
       const stars = addStars(2000, 500, scene, textures.destelloTexture);
   
       const starsObject = scene.children.find(obj => obj.type === 'Points');
@@ -1154,7 +1255,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       const originalStarSize = starMaterial ? starMaterial.size : 3;
   
       // ===============================================
-      // 📏 CÓDIGO DE LA LÍNEA DE ÓRBITA (LLAMADA A LA FUNCION QUE ESTÁ FUERA DEL USEFFECT)
+      // CÓDIGO DE LA LÍNEA DE ÓRBITA (LLAMADA A LA FUNCION QUE ESTÁ FUERA DEL USEFFECT)
       // ===============================================
       const orbitPoints = [];
       const pointCount = 150;
@@ -1180,7 +1281,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       solarGroup.add(cometOrbitLine); 
   
       // ===============================================
-      // ☄️ CÓDIGO DEL COMETA (NÚCLEO Y COLA)
+      // CÓDIGO DEL COMETA (NÚCLEO Y COLA)
       // ===============================================
   
       let cometOrbitTime = -3; 
@@ -1244,12 +1345,12 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       const posAhead = new THREE.Vector3();
   
       // ----------------------------------------------------
-      // ➡️ LLAMADA para añadir la Franja (LA FUNCION QUEDO FUERA COMO BUENA PRACTICA)
+      // LLAMADA para añadir la Franja (LA FUNCION QUEDO FUERA COMO BUENA PRACTICA)
       // ----------------------------------------------------
       const milkyWayFranja = addMilkyWayFranja(scene, textures.franjaTexture);
   
       // ----------------------------------------------------
-      // ➡️ LLAMADA: Carga y añade la Estela 
+      // LLAMADA: Carga y añade la Estela 
       // ----------------------------------------------------
       const glowHalo = addGlowHalo(scene, textures.haloFranjaTexture);
   
@@ -1271,7 +1372,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       const DEG = THREE.MathUtils.degToRad;
       
       // -----------------------------
-      // 🪐 Planeta 1 Mercurio
+      // Planeta 1 Mercurio
       // -----------------------------
       const orbitRadius1 = 20;
       const planet1 = new THREE.Mesh(
@@ -1305,7 +1406,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       solarGroup.add(orbitMesh1);
 
       // -----------------------------
-      // 🛰️ SATÉLITE MEJORADO (Ajuste Final de Geometría y Materiales)
+      // SATÉLITE MEJORADO (Ajuste Final de Geometría y Materiales)
       // -----------------------------
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
       const envMap = pmremGenerator.fromEquirectangular(textures.spaceTexture).texture;
@@ -1372,7 +1473,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       });
 
       /* =============================
-        🟦 PANELES SOLARES (REJILLA EXACTA)
+         PANELES SOLARES (REJILLA EXACTA)
       ============================= */
       const supportArm = new THREE.Mesh(
         new THREE.CylinderGeometry(0.04, 0.04, 0.4, 12),
@@ -1726,7 +1827,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       const cityLights = new THREE.Mesh(cityGeometry, cityLightsMaterial);
       planet3.add(cityLights);
       
-      // --- 🌙 Creación de la Luna ---
+      // Creación de la Luna 
       const moonRadius = 0.5; 
       const moon = new THREE.Mesh(
           new THREE.SphereGeometry(moonRadius, 32, 32),
@@ -2017,7 +2118,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       planetRotationGroup6.add(rings);
   
       // -----------------------------
-      // 🪐 Planeta 7 Urano
+      // Planeta 7 Urano
       // -----------------------------
       const planetRadius7 = 3.2; 
       const innerRing7 = planetRadius7 * 1.5;
@@ -2045,7 +2146,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       planetRotationGroup7.position.x = orbitRadius7;
   
       // -----------------------------
-      // 📐 Línea de Órbita (sin cambios)
+      // Línea de Órbita (sin cambios)
       // -----------------------------
       const orbitLine7 = new THREE.RingGeometry(orbitRadius7, orbitRadius7 + 0.2, 64);
       const orbitMat7 = new THREE.MeshBasicMaterial({
@@ -2059,7 +2160,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       solarGroup.add(orbitMesh7);
   
       // -----------------------------
-      // 🪐 Anillos de Urano (Fijos en Inclinación)
+      // Anillos de Urano (Fijos en Inclinación)
       // -----------------------------
       const ringsGeometry7 = new THREE.RingGeometry(innerRing7, outerRing7, 64);
   
@@ -2081,7 +2182,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       orbitGroup7.add(rings7);
   
       // -----------------------------
-      // 🪐 Planeta 8 Neptuno (Estructura con Grupo de Rotación y Anillos)
+      // Planeta 8 Neptuno (Estructura con Grupo de Rotación y Anillos)
       // -----------------------------
       const orbitRadius8 = 105.0; 
       const planet8Radius = 3.2; 
@@ -2105,7 +2206,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       solarGroup.add(orbitGroup8);
   
       // -----------------------------
-      // 🪐 Anillos de Neptuno
+      // Anillos de Neptuno
       // -----------------------------
       const neptunoInnerRing = planet8Radius * 1.6; 
       const neptunoOuterRing = planet8Radius * 2;
@@ -2128,7 +2229,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       planetRotationGroup8.add(rings8);
   
       // -----------------------------
-      // 📐 Línea de Órbita (sin cambios, solo usando 'orbitRadius8')
+      // Línea de Órbita (sin cambios, solo usando 'orbitRadius8')
       // -----------------------------
       const orbitLine8 = new THREE.RingGeometry(orbitRadius8, orbitRadius8 + 0.2, 64);
       const orbitMat8 = new THREE.MeshBasicMaterial({
@@ -2142,7 +2243,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       solarGroup.add(orbitMesh8);
   
       // -----------------------------
-      // 🪐 Cinturon externo del sistema solar
+      // Cinturon externo del sistema solar
       // -----------------------------
       const KUIPER_COUNT = 16000;
       const NEPTUNE_ORBIT_RADIUS = 105.0; 
@@ -2223,15 +2324,28 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
           const satPos = new THREE.Vector3();
           satellite.getWorldPosition(satPos);
         
-          const isMobile = window.innerWidth <= 768;
+          const width = window.innerWidth;
+          const isMobile = width <= 768;
+          const isTablet = width > 768 && width <= 1279;
         
-          const CAM_OFFSET = isMobile
-            ? new THREE.Vector3(0, 1.5, 6)
-            : new THREE.Vector3(0, 1.2, 5);
+          let CAM_OFFSET;
+          let LOOK_OFFSET;
         
-          const LOOK_OFFSET = isMobile
-            ? new THREE.Vector3(0, -1.5, 0)
-            : new THREE.Vector3(0, 0, 0);
+          if (isMobile) {
+            // 📱 MOBILE
+            CAM_OFFSET  = new THREE.Vector3(0, 1.5, 6);
+            LOOK_OFFSET = new THREE.Vector3(0, -1.5, 0);
+        
+          } else if (isTablet) {
+            // 📱➡️💻 TABLET
+            CAM_OFFSET  = new THREE.Vector3(0, 1.8, 6);
+            LOOK_OFFSET = new THREE.Vector3(0, -1.8, 0);
+        
+          } else {
+            // 🖥 DESKTOP
+            CAM_OFFSET  = new THREE.Vector3(0, 1.2, 5);
+            LOOK_OFFSET = new THREE.Vector3(0, 0, 0);
+          }
         
           const desiredCamPos = satPos.clone().add(CAM_OFFSET);
           camera.position.lerp(desiredCamPos, 0.08);
@@ -2247,83 +2361,169 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
         if (followMercuryRef.current) {
           const camera = cameraRef.current;
           const mercury = mercuryRef.current;
-
+        
+          if (!camera || !mercury) return;
+        
           const mercuryPos = new THREE.Vector3();
           mercury.getWorldPosition(mercuryPos);
-
-          const isMobile = window.innerWidth <= 768;
-          const CAM_OFFSET  = isMobile ? new THREE.Vector3(0, 0, 4) : new THREE.Vector3(3, 2, 7);
-          const LOOK_OFFSET = isMobile ? new THREE.Vector3(0, -1.2, 0) : new THREE.Vector3(3.5, -1.5, 0);
-
+        
+          const width = window.innerWidth;
+          const isMobile = width <= 768;
+          const isTablet = width > 768 && width <= 1279;
+        
+          let CAM_OFFSET;
+          let LOOK_OFFSET;
+          let followLerp;
+        
+          if (isMobile) {
+            // 📱 MOBILE
+            CAM_OFFSET  = new THREE.Vector3(0, 0, 4);
+            LOOK_OFFSET = new THREE.Vector3(0, -1.2, 0);
+            followLerp = 0.06;
+        
+          } else if (isTablet) {
+            // 📱➡️💻 TABLET
+            CAM_OFFSET  = new THREE.Vector3(0, 1.2, 2.8);
+            LOOK_OFFSET = new THREE.Vector3(0, -1.3, 0);
+            followLerp = 0.055;
+        
+          } else {
+            // 🖥 DESKTOP
+            CAM_OFFSET  = new THREE.Vector3(3, 2, 7);
+            LOOK_OFFSET = new THREE.Vector3(3.5, -1.5, 0);
+            followLerp = 0.05;
+          }
+        
           const desiredCamPos = mercuryPos.clone().add(CAM_OFFSET);
-          camera.position.lerp(desiredCamPos, 0.05);
-
+          camera.position.lerp(desiredCamPos, followLerp);
+        
           const customLookAt = mercuryPos.clone().add(LOOK_OFFSET);
           camera.lookAt(customLookAt);
         }
-
+        
         if (followVenusRef.current) {
           const camera = cameraRef.current;
           const venus = venusRef.current;
-
+        
           if (!camera || !venus) return;
+        
           const venusPos = new THREE.Vector3();
           venus.getWorldPosition(venusPos);
-
-          const isMobile = window.innerWidth <= 768;
-
-          const CAM_OFFSET = isMobile ? new THREE.Vector3(0, -2, 8) : new THREE.Vector3(15, 5, 15);
-          const LOOK_OFFSET = isMobile ? new THREE.Vector3(0, -2, 0) : new THREE.Vector3(10, -2, 0);
-
+        
+          // detectar dispositivo
+          const width = window.innerWidth;
+          const isMobile = width <= 768;
+          const isTablet = width > 768 && width <= 1279;
+        
+          // OFFSETS POR DISPOSITIVO (IGUALES AL ZOOM)
+          let CAM_OFFSET;
+          let LOOK_OFFSET;
+        
+          if (isMobile) {
+            // MOBILE
+            CAM_OFFSET  = new THREE.Vector3(0, 0, 8);
+            LOOK_OFFSET = new THREE.Vector3(0, -2, 0);
+        
+          } else if (isTablet) {
+            // TABLET
+            CAM_OFFSET  = new THREE.Vector3(0, 4, 8);
+            LOOK_OFFSET = new THREE.Vector3(0, -4, 0);
+        
+          } else {
+            // DESKTOP
+            CAM_OFFSET  = new THREE.Vector3(15, 5, 15);
+            LOOK_OFFSET = new THREE.Vector3(10, -2, 0);
+          }
+        
           const desiredCamPos = venusPos.clone().add(CAM_OFFSET);
           camera.position.lerp(desiredCamPos, 0.05);
-
+        
           const customLookAt = venusPos.clone().add(LOOK_OFFSET);
           camera.lookAt(customLookAt);
         }
-                            
+                           
         if (followEarthRef.current) {
           const camera = cameraRef.current;
           const earth = earthRef.current;
-
+        
           if (!camera || !earth) return;
-
+        
           const earthPos = new THREE.Vector3();
           earth.getWorldPosition(earthPos);
-
-          const isMobile = window.innerWidth <= 768;
-
-          const CAM_OFFSET = isMobile ? new THREE.Vector3(0, 0, 10) : new THREE.Vector3(18, 6, 15);
-          const LOOK_OFFSET = isMobile ? new THREE.Vector3(0, -3, 0) : new THREE.Vector3(12, -2, 0);
-
+        
+          // detectar dispositivo
+          const width = window.innerWidth;
+          const isMobile = width <= 768;
+          const isTablet = width > 768 && width <= 1279;
+        
+          // OFFSETS POR DISPOSITIVO
+          let CAM_OFFSET;
+          let LOOK_OFFSET;
+        
+          if (isMobile) {
+            // MOBILE
+            CAM_OFFSET  = new THREE.Vector3(0, 0, 10);
+            LOOK_OFFSET = new THREE.Vector3(0, -3, 0);
+        
+          } else if (isTablet) {
+            // TABLET
+            CAM_OFFSET  = new THREE.Vector3(0, 4, 8);
+            LOOK_OFFSET = new THREE.Vector3(0, -4, 0);
+        
+          } else {
+            // DESKTOP
+            CAM_OFFSET  = new THREE.Vector3(18, 6, 15);
+            LOOK_OFFSET = new THREE.Vector3(12, -2, 0);
+          }
+        
           const desiredCamPos = earthPos.clone().add(CAM_OFFSET);
           camera.position.lerp(desiredCamPos, 0.05);
-
+        
           const customLookAt = earthPos.clone().add(LOOK_OFFSET);
           camera.lookAt(customLookAt);
         }
-                            
+                       
         if (followMarsRef.current) {
           const camera = cameraRef.current;
           const mars = marsRef.current;
-
+        
           if (!camera || !mars) return;
-
+        
           const marsPos = new THREE.Vector3();
           mars.getWorldPosition(marsPos);
-
-          const isMobile = window.innerWidth <= 768;
-
-          const CAM_OFFSET = isMobile ? new THREE.Vector3(0, 0, 12) : new THREE.Vector3(18, 6, 15);
-          const LOOK_OFFSET = isMobile ? new THREE.Vector3(0, -3, 0) : new THREE.Vector3(12, -2, 0);
-
+        
+          // detectar dispositivo
+          const width = window.innerWidth;
+          const isMobile = width <= 768;
+          const isTablet = width > 768 && width <= 1279;
+        
+          // OFFSETS POR DISPOSITIVO
+          let CAM_OFFSET;
+          let LOOK_OFFSET;
+        
+          if (isMobile) {
+            // MOBILE
+            CAM_OFFSET  = new THREE.Vector3(0, 0, 12);
+            LOOK_OFFSET = new THREE.Vector3(0, -3, 0);
+        
+          } else if (isTablet) {
+            // TABLET
+            CAM_OFFSET  = new THREE.Vector3(0, 4, 8);
+            LOOK_OFFSET = new THREE.Vector3(0, -4, 0);
+        
+          } else {
+            // DESKTOP
+            CAM_OFFSET  = new THREE.Vector3(18, 6, 15);
+            LOOK_OFFSET = new THREE.Vector3(12, -2, 0);
+          }
+        
           const desiredCamPos = marsPos.clone().add(CAM_OFFSET);
           camera.position.lerp(desiredCamPos, 0.05);
-
+        
           const customLookAt = marsPos.clone().add(LOOK_OFFSET);
           camera.lookAt(customLookAt);
         }
-               
+           
         planet1.rotation.y += 0.008;
         if (!freezeMercuryOrbitRef.current) {
             orbitGroup1.rotation.y += 0.004;
@@ -2341,7 +2541,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
         }
     
           // ===============================================
-          // ☄️ ACTUALIZACIÓN DE POSICIÓN DEL COMETA
+          // ACTUALIZACIÓN DE POSICIÓN DEL COMETA
           // ===============================================
     
           cometOrbitTime += cometSpeed;
@@ -2357,7 +2557,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
           cometGroup.position.copy(newPos);
     
           // ===============================================
-          // 🌠 ANIMACIÓN DE PARTÍCULAS DE LA COLA (ACTUALIZADA Y RECTA)
+          // ANIMACIÓN DE PARTÍCULAS DE LA COLA (ACTUALIZADA Y RECTA)
           // ===============================================
           
           const tailPowerMultiplier = 25;
@@ -2458,7 +2658,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
           kuiperBelt.rotation.y += 0.0001;
     
           // -----------------------------
-          // 🌟 Lógica de Pulsación (NUEVO)
+          // Lógica de Pulsación (NUEVO)
           // -----------------------------
           if (starMaterial) {
             animationTime += 0.03;
@@ -2497,7 +2697,7 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
       gsap.registerPlugin(ScrollTrigger);
 
       setSceneReady(true); 
-      setHideLoader(true);      // inicia fade-out
+      setHideLoader(true);    
 
       // quitar el loader del DOM después del fade-out
       setTimeout(() => {
@@ -2508,6 +2708,8 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
         // da unos ms para completar la animación
         setTimeout(() => setLoaderFinished(true), 300);
       }
+
+      
 
       return () => {
 
@@ -2751,7 +2953,6 @@ import LayoutTecnologias from "./components/Inicio/LayoutTecnologias";
         </main>
       </>
     );
-    
     
   }
   

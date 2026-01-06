@@ -405,3 +405,107 @@
     position: absolute;
   }
 }
+
+/*RESPONSIVE TABLET */
+@media (min-width: 769px) and (max-width: 1279px) {
+  .home-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .left {
+    width: 80%;
+    padding: 32px 48px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .right {
+    width: 80%;
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .contenedorR {
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    gap: 24px;
+  }
+
+  /* --- Highlight / decorativos --- */
+  .highlight-wrapper1,
+  .hole-wrapper1 {
+    width: 36px;
+    height: 55px;
+  }
+
+  .hole-img1 {
+    width: 38px;
+    height: 6px;
+  }
+
+  .circle-img1 {
+    width: 28px;
+    height: 30px;
+    left: 4px;
+  }
+
+  /* --- Títulos --- */
+  .title-main {
+    font-size: 42px;
+  }
+
+  .subtitle-main {
+    font-size: 25px;
+    line-height: 1.4;
+  }
+
+  .underline {
+    text-underline-offset: 4px;
+  }
+
+  /* --- Items grandes --- */
+  .item {
+    font-size: clamp(72px, 6vw, 64px);
+    line-height: 1;
+    padding-left: 20px;
+    letter-spacing: 0.02em;
+    transform: none;
+    align-items: center;
+  }
+
+  .item::before {
+    width: 5px;
+  }
+
+  /* Hover vuelve a tener sentido */
+  .item:hover {
+    letter-spacing: 0.04em;
+  }
+
+  .item:hover::before {
+    height: 100%;
+  }
+
+  .item a {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+
+  /* --- Highlight --- */
+  .highlight {
+    background-size: 100% 0.2em;
+  }
+
+  /* --- Layout full --- */
+  .layout-tecnologias-full {
+    position: relative;
+  }
+}

@@ -205,3 +205,68 @@
     text-shadow: none;
   }
 }
+
+/* RESPONSIVE TABLET */
+@media (min-width: 769px) and (max-width: 1279px) {
+  .exp-mi-wrapper2 {
+    flex-direction: column;
+    padding-top: 16px;
+  }
+
+  /* --- Botón volver --- */
+  .btn-volver4 {
+    position: static;
+    transform: none;
+    writing-mode: horizontal-tb;
+    letter-spacing: 2.5px;
+    font-size: 20px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    align-self: flex-start;
+  }
+
+  .btn-volver4::after,
+  .btn-volver4:hover::after {
+    display: none;
+  }
+
+  /* --- Frosted --- */
+  .exp-mi-frosted2 {
+    padding: 20px;
+    border-radius: 14px;
+    justify-content: flex-start;
+  }
+
+  /* --- Contenido --- */
+  .contacto-contenido {
+    gap: 20px;
+  }
+
+  /* --- Título --- */
+  .contacto-titulo1 {
+    font-size: clamp(40px, 7vw, 56px);
+    white-space: normal;
+  }
+
+  /* --- Info --- */
+  .contacto-info {
+    gap: 24px;
+    max-width: 720px;
+  }
+
+  .contacto-descripcion {
+    font-size: 25px;
+    line-height: 1.45;
+  }
+
+  /* --- Correo --- */
+  .contacto-correo {
+    font-size: 40px;
+  }
+
+  .contacto-correo:hover {
+    color: inherit;
+    text-shadow: none;
+  }
+}

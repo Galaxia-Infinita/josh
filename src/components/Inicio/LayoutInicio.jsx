@@ -16,6 +16,7 @@ export default function LayoutInicio({ audioEnabled, onToggleAudio }) {
   const location = useLocation();
   const isHome = location.pathname === "/" || location.pathname === "";
   const isMobile = window.innerWidth <= 768;
+  const isTablet = window.innerWidth > 768 && window.innerWidth <= 1279;
 
   const [showCredits, setShowCredits] = useState(false);
   
@@ -58,7 +59,6 @@ export default function LayoutInicio({ audioEnabled, onToggleAudio }) {
   return (
     <div className="horizontal-scroll-container" ref={containerRef}>
       <div className={`container ${isHome ? "home-layout" : ""}`}>
-
         <div className="left">
           <h1 className="title-main">
             J
@@ -95,7 +95,7 @@ export default function LayoutInicio({ audioEnabled, onToggleAudio }) {
             <Outlet />
           </div>
         </div>
-        {isMobile && ( 
+        {(isMobile || isTablet) && ( 
           <div className="floating-buttons-vertical-custom">
             {/* Botón de créditos */}
             <div className="floating-btn-wrapper">

@@ -57,7 +57,7 @@ export default function SobreMi({ isReady }) {
               <div className="sobre-mi-info">
                 <p><strong>Edad:</strong> 26 años</p>
                 <p><strong>Ciudad:</strong> Ate, Lima</p>
-
+                
                 <p><strong>Pasatiempos:</strong></p>
                 <ul className="vinetas-personalizadas">
                   <li>Crear animaciones web 2D o 3D</li>

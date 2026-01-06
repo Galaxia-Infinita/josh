@@ -14,7 +14,6 @@ import TaigoApp1 from "../../assets/images/ap1-1.png";
 import TaigoApp2 from "../../assets/images/ap1-2.png";
 import TaigoApp3 from "../../assets/images/ap1-3.png";
 import TaigoApp4 from "../../assets/images/ap1-4.png";
-import Diseno1 from "../../assets/images/dis1.png";
 import Diseno1_1 from "../../assets/images/diseño1-1.png";
 import Diseno1_2 from "../../assets/images/diseño1-2.png";
 import Diseno1_3 from "../../assets/images/diseño1-3.png";
@@ -277,26 +276,19 @@ export default function Creaciones({ isReady }) {
     ),
     
     "DISEÑO VISUAL": (
-      <>
-        <div className="crea-diseno-wrapper">
-          <h3 className="crea-diseno-title">DISEÑO DE APP</h3>
+      <div className="crea-diseno-wrapper">
+        <h3 className="crea-diseno-title">DISEÑO DE APP</h3>
     
-          {/* Fila 1 */}
-          <div className="crea-diseno-row">
-            <img src={Diseno1_1} alt="Diseño 1" className="crea-diseno-img" />
-            <img src={Diseno1_2} alt="Diseño 2" className="crea-diseno-img" />
-            <img src={Diseno1_3} alt="Diseño 3" className="crea-diseno-img" />
-          </div>
-    
-          {/* Fila 2 */}
-          <div className="crea-diseno-row">
-            <img src={Diseno1_4} alt="Diseño 4" className="crea-diseno-img" />
-            <img src={Diseno1_5} alt="Diseño 5" className="crea-diseno-img" />
-            <img src={Diseno1_6} alt="Diseño 6" className="crea-diseno-img" />
-          </div>
+        <div className="crea-diseno-row">
+          <img src={Diseno1_1} alt="Diseño 1" className="crea-diseno-img" />
+          <img src={Diseno1_2} alt="Diseño 2" className="crea-diseno-img" />
+          <img src={Diseno1_3} alt="Diseño 3" className="crea-diseno-img" />
+          <img src={Diseno1_4} alt="Diseño 4" className="crea-diseno-img" />
+          <img src={Diseno1_5} alt="Diseño 5" className="crea-diseno-img" />
+          <img src={Diseno1_6} alt="Diseño 6" className="crea-diseno-img" />
         </div>
-      </>
-    ),
+      </div>
+    )    
   };
 
   return (
